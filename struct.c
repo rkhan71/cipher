@@ -3,8 +3,8 @@
 int main(void)
 {
   typedef struct {
-    char chars
-    char *bytes
+    char chars;
+    char *bytes;
     }
   key;
   FILE *file = fopen("decodekeynew.csv", "r");
@@ -24,6 +24,7 @@ int main(void)
     key[i].bytes = byte;
     i++;
     }
+}
       
     
     
