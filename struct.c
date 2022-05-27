@@ -41,18 +41,18 @@ int main(int argc, char *argv[])
     key[i].bytes = byte;
     i++;
     }
+    fclose(keyfile);
 
   // get message from file then convert it to cipher text
   char msgchar;
-  char ctext[1000]; //need to allocate memory first so there's a 500 char max for the message
-  int j = 0;
+  char ctext[1000]; //need to allocate memory first so there's a 500 char max for the message (since bytes are 2 chars in this case)
   while (fread(&msgchar, 1, 1, msgfile) == 1)
   {
     for (int k = 0; k < KEYSIZE; k++)
     {
       if (msgchar == key[k].chars)
       {
-        ctext[j] = *key[k].bytes;
+        strcat(ctext, key[k].bytes);
         break;
       }
       else if (k == KEYSIZE - 1)
@@ -61,13 +61,26 @@ int main(int argc, char *argv[])
         return 1;
       }
     }
-    j += 2; // since length of byte is 2 (if length is variable use strlen to find length of byte and add that)
   }
-
+  fclose(msgfile);
   printf("cipher text: %s\n", ctext);
+
+  // convert cipher text back to plain text
+  char ptext[500];
+  int l = strlen(ctext);
+  char *cbyte = malloc(3);
+  for (int k = 0; k < l; k += 2)
+  {
+    strncat(cbyte, &ctext[k], 1);
+    strncat(cbyte, &ctext[k + 1], 1);
+    for (int j = 0; j < KEYSIZE; j++)
+    {
+      if (strcmp(cbyte, key[j].bytes) == 0)
+      {
+        strcat(ptext, &key[j].chars);
+        break;
+      }
+    }
+  }
+  printf("plain text: %s\n", ptext);
 }
-
-
-
-
-
