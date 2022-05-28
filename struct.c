@@ -19,7 +19,8 @@ int main(int argc, char *argv[])
 
   // constants
   #define BUFSIZE 10
-  #define KEYSIZE 95
+  #define KEYSIZE 96
+  #define MAX 500
 
   // create struct to put key into
   typedef struct {
@@ -41,11 +42,17 @@ int main(int argc, char *argv[])
     key[i].bytes = byte;
     i++;
     }
+    key[i].chars = '\n'; // manually adding in newline character
+    key[i].bytes = "0a";
     fclose(keyfile);
 
   // get message from file then convert it to cipher text
   char msgchar;
-  char ctext[1000]; //need to allocate memory first so there's a 500 char max for the message (since bytes are 2 chars in this case)
+  char ctext[MAX * 2]; //need to allocate memory first so there's a 500 char max for the message (since bytes are 2 chars in this case)
+  for (int j = 0; j < MAX * 2; j++)
+  {
+    ctext[j] = '\0';
+  }
   while (fread(&msgchar, 1, 1, msgfile) == 1)
   {
     for (int k = 0; k < KEYSIZE; k++)
@@ -66,21 +73,31 @@ int main(int argc, char *argv[])
   printf("cipher text: %s\n", ctext);
 
   // convert cipher text back to plain text
-  char ptext[500];
+  char ptext[MAX];
+  for (int j = 0; j < MAX; j++)
+  {
+    ptext[j] = '\0';
+  }
   int l = strlen(ctext);
-  char *cbyte = malloc(3);
   for (int k = 0; k < l; k += 2)
   {
+    char cbyte[3] = "\0\0\0";
     strncat(cbyte, &ctext[k], 1);
     strncat(cbyte, &ctext[k + 1], 1);
     for (int j = 0; j < KEYSIZE; j++)
     {
       if (strcmp(cbyte, key[j].bytes) == 0)
       {
-        strcat(ptext, &key[j].chars);
+        strncat(ptext, &key[j].chars, 1);
         break;
       }
     }
   }
   printf("plain text: %s\n", ptext);
+
+  //free allocated memory
+  for (int j = 0; j < KEYSIZE - 1; j++)
+  {
+    free(key[j].bytes);
+  }
 }
