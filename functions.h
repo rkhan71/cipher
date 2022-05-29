@@ -1,3 +1,5 @@
+// header file with prototypes for functions in functions.c
+
 #include "definitions.h"
 #include <stdio.h>
 
