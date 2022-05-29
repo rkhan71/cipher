@@ -1,3 +1,5 @@
+//code that (kind of) does the basic things I want my cipher to do eventually. Essentially a plan for the overall project written in one file of code to make it simple.
+
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
