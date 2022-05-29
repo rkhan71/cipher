@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
   keystruct key[KEYSIZE];
 
   // get key from file and fill the struct
-  FILE *keyfile = fopen("decodekeynew.csv", "r");
+  FILE *keyfile = fopen("cipherprojectkey.csv", "r");
   char buffer[BUFSIZE];
   fread(buffer, 3, 1, keyfile); // get rid of first 3 bytes in csv file
   int i = 0;
