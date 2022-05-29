@@ -62,18 +62,18 @@ int encrypt(FILE *msgfile, char *ofn)
 int decrypt(FILE *encfile, char *ofn)
 {
     char ptext[MAX];
-    for (int j = 0; j < MAX * 2; j++)
+    for (int j = 0; j < MAX; j++)
     {
         ptext[j] = '\0';
     }
     char cbyte[3];
-    while (fread(cbyte, 1, 2, encfile) == 1)
+    while (fread(cbyte, 1, 2, encfile) == 2)
     {
         for (int k = 0; k < KEYSIZE; k++)
         {
             if (strcmp(cbyte, key[k].bytes) == 0)
             {
-                strncat(ptext, &key[k].chars, 1); // WHAT IS THIS ABOUT I DON'T EVEN KNOW
+                strncat(ptext, &key[k].chars, 1);
                 break;
             }
             else if (k == KEYSIZE - 1)
