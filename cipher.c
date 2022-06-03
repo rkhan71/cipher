@@ -5,7 +5,7 @@
 
 int main(int argc, char *argv[])
 {
-    make_struct("decodekeynew.csv");
+    make_struct("cipherprojectkey.csv");
     if (strcmp(argv[1], "e") == 0)
     {
         FILE *msgfile = fopen(argv[2], "r");
